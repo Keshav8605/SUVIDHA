@@ -1,6 +1,7 @@
 import 'package:cdgi/start_screen2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 class StartScreen1 extends StatelessWidget {
   const StartScreen1({super.key});
@@ -19,6 +20,10 @@ class StartScreen1 extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Lottie.asset(
+                      "assets/animations/call_center.json",
+                      width: 300,
+                    ),
                     const Spacer(flex: 2),
                     // Main heading
                     Text(
@@ -92,7 +97,9 @@ class StartScreen1 extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const StartScreen2()),
+                            MaterialPageRoute(
+                              builder: (context) => const StartScreen2(),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(

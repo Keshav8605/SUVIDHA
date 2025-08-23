@@ -1,6 +1,7 @@
 import 'package:cdgi/start_screen3.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 class StartScreen2 extends StatelessWidget {
   const StartScreen2({super.key});
@@ -14,6 +15,10 @@ class StartScreen2 extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: [
+              Lottie.asset(
+                "assets/animations/mobile_notification.json",
+                width: 300,
+              ),
               // Expanded content section
               Expanded(
                 child: Column(
@@ -75,8 +80,11 @@ class StartScreen2 extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(Icons.arrow_back,
-                            size: 18, color: Colors.black),
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          size: 18,
+                          color: Colors.black,
+                        ),
                         label: Text(
                           'Prev',
                           style: GoogleFonts.montserrat(
@@ -95,7 +103,9 @@ class StartScreen2 extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const StartScreen3()),
+                              MaterialPageRoute(
+                                builder: (context) => const StartScreen3(),
+                              ),
                             );
                           },
                           style: ElevatedButton.styleFrom(

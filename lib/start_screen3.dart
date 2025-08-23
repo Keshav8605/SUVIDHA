@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 class StartScreen3 extends StatelessWidget {
   const StartScreen3({super.key});
@@ -16,8 +17,13 @@ class StartScreen3 extends StatelessWidget {
               // Expanded section for title + subtitle
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Lottie.asset(
+                      "assets/animations/ai_lottie.json",
+                      width: 300,
+                    ),
                     const Spacer(flex: 2),
 
                     // Title
@@ -74,8 +80,11 @@ class StartScreen3 extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context); // Go back to Screen 2
                         },
-                        icon: const Icon(Icons.arrow_back,
-                            size: 18, color: Colors.black),
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          size: 18,
+                          color: Colors.black,
+                        ),
                         label: Text(
                           'Prev',
                           style: GoogleFonts.montserrat(
