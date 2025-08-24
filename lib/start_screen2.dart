@@ -1,70 +1,95 @@
 import 'package:cdgi/start_screen3.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 class StartScreen2 extends StatelessWidget {
   const StartScreen2({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Simple responsive variable
+    double size = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: EdgeInsets.symmetric(horizontal: size / 15),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              // Expanded content section
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Spacer(flex: 2),
+              // Main content area
+              SizedBox(height: size / 20),
 
-                    // Title
-                    Text(
-                      'Stay Updated',
-                      style: GoogleFonts.montserrat(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Top spacing
+                  SizedBox(height: size / 8),
+
+                  // Lottie animation
+                  Lottie.asset(
+                    "assets/animations/mobile_notification.json",
+                    width: size / 1.2,
+                    height: size / 1.2,
+                    fit: BoxFit.contain,
+                  ),
+
+                  // Spacer
+                  SizedBox(height: size / 5),
+
+                  // Title
+                  Text(
+                    'Stay Updated',
+                    style: GoogleFonts.montserrat(
+                      fontSize: size / 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                      height: 1.2,
                     ),
+                    textAlign: TextAlign.center,
+                  ),
 
-                    const SizedBox(height: 8),
+                  SizedBox(height: size / 40),
 
-                    // Subtitle
-                    Text(
+                  // Subtitle
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: size / 20),
+                    child: Text(
                       'Get instant alerts for every\nimportant update.',
                       style: GoogleFonts.montserrat(
-                        fontSize: 16,
+                        fontSize: size / 25,
                         color: const Color(0xFF656565),
                         height: 1.4,
                       ),
                       textAlign: TextAlign.center,
                     ),
+                  ),
 
-                    const SizedBox(height: 60),
-                  ],
-                ),
+                  // Bottom spacing
+                  SizedBox(height: 0),
+                ],
               ),
+              SizedBox(height: size / 10),
 
-              // Bottom navigation section
+              // Bottom section with indicators and button
               Column(
                 children: [
-                  // Page indicators (same as StartScreen1)
+                  // Page indicators
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildDot(false),
-                      const SizedBox(width: 8),
-                      _buildDot(true),
-                      const SizedBox(width: 8),
-                      _buildDot(false),
+                      _buildDot(false, size / 35),
+                      SizedBox(width: size / 50),
+                      _buildDot(true, size / 35),
+                      SizedBox(width: size / 50),
+                      _buildDot(false, size / 35),
                     ],
                   ),
-                  const SizedBox(height: 60),
+
+                  SizedBox(height: size / 8),
 
                   // Prev / Next buttons
                   Row(
@@ -75,41 +100,53 @@ class StartScreen2 extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(Icons.arrow_back,
-                            size: 18, color: Colors.black),
+                        icon: Icon(
+                          Icons.arrow_back,
+                          size: size / 22,
+                          color: Colors.black,
+                        ),
                         label: Text(
                           'Prev',
                           style: GoogleFonts.montserrat(
-                            fontSize: 15,
+                            fontSize: size / 28,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
+                          ),
+                        ),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size / 35,
+                            vertical: size / 40,
                           ),
                         ),
                       ),
 
                       // Next button
                       SizedBox(
-                        width: 121,
-                        height: 47.5,
+                        width: size / 3,
+                        height: size / 8,
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const StartScreen3()),
+                              CupertinoPageRoute(
+                                builder: (context) => const StartScreen3(),
+                              ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0x33468AFF),
                             foregroundColor: const Color(0xFF468AFF),
                             elevation: 0,
+                            padding: EdgeInsets.zero,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(72),
+                              borderRadius: BorderRadius.circular(size / 6),
                             ),
                           ),
                           child: Text(
                             'Next',
                             style: GoogleFonts.montserrat(
-                              fontSize: 16,
+                              fontSize: size / 25,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -117,7 +154,8 @@ class StartScreen2 extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 120),
+
+                  SizedBox(height: size / 10),
                 ],
               ),
             ],
@@ -127,11 +165,11 @@ class StartScreen2 extends StatelessWidget {
     );
   }
 
-  // Updated helper widget for larger dots
-  Widget _buildDot(bool isActive) {
+  // Helper widget for dots
+  Widget _buildDot(bool isActive, double size) {
     return Container(
-      width: 12,
-      height: 12,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         color: isActive ? const Color(0xFF468AFF) : Colors.grey.shade300,
         shape: BoxShape.circle,

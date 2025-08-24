@@ -1,111 +1,148 @@
+import 'package:cdgi/login_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:get/get.dart';
 
 class StartScreen3 extends StatelessWidget {
   const StartScreen3({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Simple responsive variable
+    double size = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: EdgeInsets.symmetric(horizontal: size / 15),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              // Expanded section for title + subtitle
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Spacer(flex: 2),
+              // Main content area
+              SizedBox(height: size / 20),
 
-                    // Title
-                    Text(
-                      'Smart & Seamless',
-                      style: GoogleFonts.montserrat(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Top spacing
+                  SizedBox(height: size / 8),
+
+                  // Lottie animation
+                  Lottie.asset(
+                    'assets/animations/ai_lottie.json',
+                    width: size / 1.2,
+                    height: size / 1.2,
+                    fit: BoxFit.contain,
+                  ),
+
+                  // Spacer
+                  SizedBox(height: size / 5),
+
+                  // Title
+                  Text(
+                    'Smart & Seamless',
+                    style: GoogleFonts.montserrat(
+                      fontSize: size / 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                      height: 1.2,
                     ),
+                    textAlign: TextAlign.center,
+                  ),
 
-                    const SizedBox(height: 8),
+                  SizedBox(height: size / 40),
 
-                    // Subtitle
-                    Text(
+                  // Subtitle
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: size / 20),
+                    child: Text(
                       'Experience faster service with\nAI-powered solutions.',
                       style: GoogleFonts.montserrat(
-                        fontSize: 16,
+                        fontSize: size / 25,
                         color: const Color(0xFF656565),
                         height: 1.4,
                       ),
                       textAlign: TextAlign.center,
                     ),
+                  ),
 
-                    const SizedBox(height: 60),
-                  ],
-                ),
+                  // Bottom spacing
+                  SizedBox(height: 0),
+                ],
               ),
+              SizedBox(height: size / 10),
 
-              // Bottom navigation
+              // Bottom section with indicators and button
               Column(
                 children: [
-                  // Dots indicator
+                  // Page indicators
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildDot(false),
-                      const SizedBox(width: 8),
-                      _buildDot(false),
-                      const SizedBox(width: 8),
-                      _buildDot(true),
+                      _dot(false, size / 35),
+                      SizedBox(width: size / 50),
+                      _dot(false, size / 35),
+                      SizedBox(width: size / 50),
+                      _dot(true, size / 35),
                     ],
                   ),
-                  const SizedBox(height: 60),
 
-                  // Prev + Next (Next can later go to Home/Login page)
+                  SizedBox(height: size / 8),
+
+                  // Prev and Next buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Prev button
                       TextButton.icon(
-                        onPressed: () {
-                          Navigator.pop(context); // Go back to Screen 2
-                        },
-                        icon: const Icon(Icons.arrow_back,
-                            size: 18, color: Colors.black),
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(
+                          Icons.arrow_back,
+                          size: size / 22,
+                          color: Colors.black,
+                        ),
                         label: Text(
                           'Prev',
                           style: GoogleFonts.montserrat(
-                            fontSize: 15,
+                            fontSize: size / 28,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
                           ),
                         ),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size / 35,
+                            vertical: size / 40,
+                          ),
+                        ),
                       ),
 
-                      // Next button (currently placeholder)
+                      // Next button
                       SizedBox(
-                        width: 121,
-                        height: 47.5,
+                        width: size / 3,
+                        height: size / 8,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // TODO: Navigate to Home/Login page
-                          },
+                          onPressed: () => Get.offAll(
+                            LoginScreen(),
+                            transition: Transition.zoom,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0x33468AFF),
                             foregroundColor: const Color(0xFF468AFF),
                             elevation: 0,
+                            padding: EdgeInsets.zero,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(72),
+                              borderRadius: BorderRadius.circular(size / 6),
                             ),
                           ),
                           child: Text(
                             'Next',
                             style: GoogleFonts.montserrat(
-                              fontSize: 16,
+                              fontSize: size / 25,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -113,7 +150,8 @@ class StartScreen3 extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 120),
+
+                  SizedBox(height: size / 10),
                 ],
               ),
             ],
@@ -123,15 +161,13 @@ class StartScreen3 extends StatelessWidget {
     );
   }
 
-  // Dot builder (same as StartScreen1 & 2)
-  Widget _buildDot(bool isActive) {
-    return Container(
-      width: 12,
-      height: 12,
-      decoration: BoxDecoration(
-        color: isActive ? const Color(0xFF468AFF) : Colors.grey.shade300,
-        shape: BoxShape.circle,
-      ),
-    );
-  }
+  // Helper method for dots
+  Widget _dot(bool active, double size) => Container(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      color: active ? const Color(0xFF468AFF) : Colors.grey.shade300,
+      shape: BoxShape.circle,
+    ),
+  );
 }
