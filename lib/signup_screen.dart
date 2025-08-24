@@ -1,3 +1,4 @@
+import 'package:cdgi/home1.dart';
 import 'package:cdgi/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -289,6 +290,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   // TODO: Implement sign up logic
+                                  Get.to(() => const Home1());
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF0074E7),

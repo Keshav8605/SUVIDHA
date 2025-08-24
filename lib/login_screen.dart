@@ -1,3 +1,4 @@
+import 'package:cdgi/home1.dart';
 import 'package:cdgi/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -231,6 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   // TODO: Implement sign in logic
+                                  Get.to(() => const Home1());
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF0074E7),
