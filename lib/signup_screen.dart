@@ -26,9 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     bool isLargeScreen = screenWidth > 600;
 
     // Responsive font sizes - matching login screen exactly
-    double titleFontSize = isSmallScreen
-        ? screenWidth * 0.06
-        : (isLargeScreen ? 28 : screenWidth * 0.07);
+    double titleFontSize = screenWidth * 0.09;
     double subtitleFontSize = isSmallScreen
         ? screenWidth * 0.03
         : (isLargeScreen ? 16 : screenWidth * 0.035);
