@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "919663673070",
+    "project_id": "hackwave-cacc7",
+    "storage_bucket": "hackwave-cacc7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919663673070:android:94621c7fef98e848967dff",
+        "android_client_info": {
+          "package_name": "com.bajrang.cdgi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919663673070-rdsrcts4hg3vtd2i7ng3jugg2vo1mqt7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bajrang.cdgi",
+            "certificate_hash": "61ff0d2a6847681912c794c23c597c81d05608cb"
+          }
+        },
+        {
+          "client_id": "919663673070-aq85hfg6p11rl2quk548kbk20p00s15u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAftsRj6NECZsbisnmV9dSJHQs3gk4HMUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919663673070-aq85hfg6p11rl2quk548kbk20p00s15u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

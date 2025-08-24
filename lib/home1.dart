@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
-import 'home2.dart';
+import 'beu_home.dart';
+import 'my_issues_screen.dart';
 
 class Home1 extends StatelessWidget {
   const Home1({super.key});
@@ -120,6 +121,23 @@ class Home1 extends StatelessWidget {
                       ),
                     ],
                   ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => MyIssuesPage());
+                    },
+                    child: Text(
+                      'My Issues',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 10,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Color(0xFF4332FF),
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF4332FF),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -228,7 +246,7 @@ class Home1 extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           // TODO: Navigate to next screen
-                          Get.to(() => const Home2());
+                          Get.to(() => HomePage());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors
