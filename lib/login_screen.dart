@@ -3,7 +3,6 @@ import 'package:cdgi/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
-
 import 'auth_functions.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,12 +18,12 @@ class _LoginScreenState extends State<LoginScreen> {
     if (usercredential != null) {
       final user = usercredential.user;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Signed in user as ${user!.displayName}')),
+        SnackBar(content: Text('Signed in as ${user!.displayName}')),
       );
       Get.offAll(Home1());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Google sign-in cancelled or failed')),
+        const SnackBar(content: Text('Google sign-in cancelled or failed')),
       );
     }
   }
@@ -32,15 +31,37 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  /// ✅ Email/Password Sign-In Logic
+  Future<void> emailPasswordSignIn() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter email and password')),
+      );
+      return;
+    }
+
+    try {
+      await signin(email, password, context);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Login successful!')));
+      Get.offAll(Home1());
+    } catch (e) {
+      // Error message is already shown inside signin()
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Responsive variables
     double screenWidth = Get.width;
     double screenHeight = Get.height;
     bool isSmallScreen = screenWidth < 360;
     bool isLargeScreen = screenWidth > 600;
 
-    // Responsive font sizes
     double titleFontSize = screenWidth * 0.09;
     double subtitleFontSize = isSmallScreen
         ? screenWidth * 0.03
@@ -55,7 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ? screenWidth * 0.04
         : (isLargeScreen ? 20 : screenWidth * 0.045);
 
-    // Responsive padding and margins
     double horizontalPadding = isSmallScreen
         ? screenWidth * 0.06
         : (isLargeScreen ? 48 : screenWidth * 0.08);
@@ -83,14 +103,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Column(
                       children: [
-                        // Top spacing
                         SizedBox(
                           height: isSmallScreen
                               ? screenHeight * 0.06
                               : screenHeight * 0.08,
                         ),
-
-                        // SUVIDHA Logo and tagline
                         Column(
                           children: [
                             Text(
@@ -129,18 +146,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
-
                         SizedBox(
                           height: isSmallScreen
                               ? screenHeight * 0.06
                               : screenHeight * 0.08,
                         ),
-
-                        // Welcome Back section
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // Welcome Back title
                             Text(
                               'Welcome Back!',
                               style: GoogleFonts.montserrat(
@@ -150,8 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             SizedBox(height: screenHeight * 0.005),
-
-                            // Sign in to continue subtitle
                             Text(
                               'Sign in to continue',
                               style: GoogleFonts.montserrat(
@@ -160,14 +171,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-
                             SizedBox(
                               height: isSmallScreen
                                   ? screenHeight * 0.04
                                   : screenHeight * 0.05,
                             ),
-
-                            // Email field
+                            // Email Field
                             Container(
                               constraints: BoxConstraints(
                                 maxWidth: isLargeScreen ? 400 : double.infinity,
@@ -201,10 +210,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-
                             SizedBox(height: screenHeight * 0.02),
-
-                            // Password field
+                            // Password Field
                             Container(
                               constraints: BoxConstraints(
                                 maxWidth: isLargeScreen ? 400 : double.infinity,
@@ -235,22 +242,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-
                             SizedBox(
                               height: isSmallScreen
                                   ? screenHeight * 0.03
                                   : screenHeight * 0.04,
                             ),
-
-                            // Sign In button
+                            // ✅ Email/Password Sign-In Button
                             SizedBox(
                               width: isLargeScreen ? 400 : double.infinity,
                               height: buttonHeight,
                               child: ElevatedButton(
-                                onPressed: () {
-                                  // TODO: Implement sign in logic
-                                  Get.to(() => const Home1());
-                                },
+                                onPressed:
+                                    emailPasswordSignIn, // <-- integrated here
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF0074E7),
                                   foregroundColor: Colors.white,
@@ -268,14 +271,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-
                             SizedBox(
                               height: isSmallScreen
                                   ? screenHeight * 0.025
                                   : screenHeight * 0.03,
                             ),
-
-                            // Or continue with divider
+                            // OR Divider
                             SizedBox(
                               width: isLargeScreen ? 400 : double.infinity,
                               child: Row(
@@ -303,21 +304,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                             ),
-
                             SizedBox(
                               height: isSmallScreen
                                   ? screenHeight * 0.025
                                   : screenHeight * 0.03,
                             ),
-
-                            // Sign in with Google button (Circular border)
+                            // Google Sign-In Button
                             SizedBox(
                               width: isLargeScreen ? 400 : double.infinity,
                               height: buttonHeight,
                               child: OutlinedButton.icon(
-                                onPressed: () {
-                                  googlesignin();
-                                },
+                                onPressed: googlesignin,
                                 icon: Image.asset(
                                   'assets/images/google_icon.png',
                                   width: isSmallScreen
@@ -338,9 +335,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: Colors.grey[300]!),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      50,
-                                    ), // Made circular
+                                    borderRadius: BorderRadius.circular(50),
                                   ),
                                 ),
                               ),
@@ -349,8 +344,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-
-                    // Bottom section
                     Column(
                       children: [
                         SizedBox(
@@ -358,12 +351,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ? screenHeight * 0.04
                               : screenHeight * 0.06,
                         ),
-
-                        // Not a member? Register
                         Center(
                           child: TextButton(
                             onPressed: () {
-                              // TODO: Navigate to registration page
                               Get.off(RegisterScreen());
                             },
                             child: RichText(
@@ -388,7 +378,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-
                         SizedBox(
                           height: isSmallScreen
                               ? screenHeight * 0.02
