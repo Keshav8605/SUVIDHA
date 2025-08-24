@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
+import 'auth_functions.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -12,6 +14,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  void googlesignin() async {
+    final usercredential = await signInWithGoogle();
+    if (usercredential != null) {
+      final user = usercredential.user;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Signed in user as ${user!.displayName}')),
+      );
+      Get.offAll(Home1());
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google sign-in cancelled or failed')),
+      );
+    }
+  }
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -299,7 +316,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: buttonHeight,
                               child: OutlinedButton.icon(
                                 onPressed: () {
-                                  // TODO: Implement Google sign in
+                                  googlesignin();
                                 },
                                 icon: Image.asset(
                                   'assets/images/google_icon.png',
