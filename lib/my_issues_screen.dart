@@ -336,15 +336,15 @@ class _MyIssuesPageState extends State<MyIssuesPage> {
         ),
       );
     }
-
+    var reversed = _issues.reversed;
     return RefreshIndicator(
       onRefresh: _refreshIssues,
       color: const Color(0xFF468AFF),
       child: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: _issues.length,
+        itemCount: reversed.length,
         itemBuilder: (context, index) {
-          final issue = _issues[index];
+          final issue = reversed.elementAt(index);
           return _buildIssueCard(
             issue,
             sizeConfigW,

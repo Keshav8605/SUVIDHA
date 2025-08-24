@@ -1,4 +1,6 @@
+import 'package:cdgi/my_issues_screen.dart';
 import 'package:cdgi/services/camera_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,6 +9,7 @@ import 'package:cdgi/viewmodels/issue_viewmodel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,41 +66,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  //
-  // Future<void> _submitIssue() async {
-  //   if (_transcript.isEmpty) return;
-  //
-  //   try {
-  //     final User? currentUser = FirebaseAuth.instance.currentUser;
-  //
-  //     if (currentUser == null) {
-  //       _showSnack('User not authenticated');
-  //       return;
-  //     }
-  //
-  //     final either = await _issueViewModel.createIssue(
-  //       currentUser.email ?? "unknown@example.com", // Use actual user email
-  //       currentUser.displayName ??
-  //           "Voice Report", // Use actual user name or fallback
-  //       _transcript,
-  //       _base32Photo,
-  //     );
-  //
-  //     either.fold(
-  //       (failure) {
-  //         _showSnack('Error: ${failure.message}');
-  //       },
-  //       (success) {
-  //         _showSnack('Issue submitted successfully!');
-  //         setState(
-  //           () => _transcript = '',
-  //         ); // Clear transcript after successful submission
-  //       },
-  //     );
-  //   } catch (e) {
-  //     _showSnack('Failed to submit issue: $e');
-  //   }
-  // }
 
   /* ---------- UI ---------- */
   @override
@@ -504,6 +472,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
   final IssueViewModel _issueViewModel = IssueViewModel();
   bool _isLoading = false;
   bool _isSuccess = false;
+  final FlutterTts _flutterTts = FlutterTts();
   Future<void> _submitComplaint() async {
     setState(() => _isLoading = true);
 
@@ -541,15 +510,23 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
             ),
           );
         },
-        (success) {
+        (success) async {
           setState(() {
             _isLoading = false;
             _isSuccess = true;
           });
+          await _flutterTts.setLanguage("en-US");
+          await _flutterTts.speak(
+            "Ticket is successfully created and action will be taken soon.",
+          );
 
           // Auto close after showing success
-          Future.delayed(const Duration(seconds: 2), () {
+          Future.delayed(const Duration(seconds: 3), () {
             if (mounted) Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (context) => MyIssuesPage()),
+            );
           });
         },
       );
