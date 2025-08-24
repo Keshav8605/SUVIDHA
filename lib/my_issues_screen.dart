@@ -548,7 +548,29 @@ class _MyIssuesPageState extends State<MyIssuesPage> {
               ),
             ],
           ),
-
+          SizedBox(height: 8),
+          if (issue.status == "admin_completed")
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: Colors.green, // button background
+                foregroundColor: Colors.white, // text color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // rounded corners
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              ),
+              onPressed: () async {
+                bool isCOom = await IssueService.updateIssueStatus(
+                  issue.ticketId,
+                );
+                print(isCOom);
+                if (isCOom) {
+                  _refreshIssues();
+                }
+              },
+              child: Text("Mark Complete"),
+            ),
           // Issue count if greater than 1
           if (issue.issueCount > 1) ...[
             SizedBox(height: sizeConfigH * 1),

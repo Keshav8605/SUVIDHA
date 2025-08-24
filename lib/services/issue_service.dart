@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../models/issue_model.dart';
@@ -43,8 +44,30 @@ class IssueService {
       return issue;
     }
     debugPrint('Response Code Login Failed: ${response.statusCode}');
-    print(jsonDecode(response.body));
     throw Exception(jsonDecode(response.body));
+  }
+
+  static Future<bool> updateIssueStatus(String ticketId) async {
+    try {
+      final User? currentUser = FirebaseAuth.instance.currentUser;
+
+      final response = await http.post(
+        Uri.parse(
+          'https://cdgi-backend-main.onrender.com/issues/$ticketId/complete',
+        ),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'completion_type': 'user',
+          'email': currentUser!.email ?? "admin@g.com",
+        }),
+      );
+      print(response.statusCode);
+      print(response.body);
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error updating issue status: $e');
+      return false;
+    }
   }
 
   Future<List<IssueModel>> getIssuesByUser(String email) async {
