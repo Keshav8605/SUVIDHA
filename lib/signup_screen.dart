@@ -163,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   fontSize: bodyFontSize,
                                 ),
                                 decoration: InputDecoration(
-                                  hintText: 'Username',
+                                  hintText: 'Full name',
                                   hintStyle: GoogleFonts.montserrat(
                                     color: Colors.grey[500],
                                     fontSize: bodyFontSize,

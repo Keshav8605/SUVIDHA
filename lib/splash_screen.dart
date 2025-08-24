@@ -16,8 +16,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Navigate to StartScreen1 after 3 seconds
-    Timer(const Duration(seconds: 3), () {
-      Get.off(() => const StartScreen1()); // Use Get.off to replace current route
+    Timer(const Duration(seconds: 5), () {
+      Get.off(
+        () => const StartScreen1(),
+      ); // Use Get.off to replace current route
     });
   }
 
@@ -54,16 +56,14 @@ class _SplashScreenState extends State<SplashScreen> {
                   fontSize: titleFontSize,
                   fontWeight: FontWeight.bold,
                   foreground: Paint()
-                    ..shader = const LinearGradient(
-                      colors: [
-                        Color(0xFF468AFF),
-                        Color(0xFF8969FF),
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ).createShader(
-                      Rect.fromLTWH(0.0, 0.0, 300.0, titleFontSize * 1.2),
-                    ),
+                    ..shader =
+                        const LinearGradient(
+                          colors: [Color(0xFF468AFF), Color(0xFF8969FF)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ).createShader(
+                          Rect.fromLTWH(0.0, 0.0, 300.0, titleFontSize * 1.2),
+                        ),
                 ),
               ),
 

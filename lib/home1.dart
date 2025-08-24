@@ -23,15 +23,9 @@ class Home1 extends StatelessWidget {
     double titleFontSize = isSmallScreen
         ? sizeConfigW * 6
         : (isLargeScreen ? sizeConfigW * 7 : sizeConfigW * 6.5);
-    double headerFontSize = isSmallScreen
-        ? sizeConfigW * 5.5
-        : (isLargeScreen ? sizeConfigW * 6.5 : sizeConfigW * 6);
-    double subtitleFontSize = isSmallScreen
-        ? sizeConfigW * 3.5
-        : (isLargeScreen ? sizeConfigW * 4.5 : sizeConfigW * 4);
-    double bodyFontSize = isSmallScreen
-        ? sizeConfigW * 3
-        : (isLargeScreen ? sizeConfigW * 4 : sizeConfigW * 3.5);
+    double headerFontSize = screenWidth * 0.07;
+    double subtitleFontSize = screenWidth * 0.05;
+    double bodyFontSize = screenWidth * 0.045;
     double buttonFontSize = isSmallScreen
         ? sizeConfigW * 4
         : (isLargeScreen ? sizeConfigW * 5 : sizeConfigW * 4.5);
@@ -71,44 +65,60 @@ class Home1 extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    'SUVIDHA',
-                    style: GoogleFonts.montserrat(
-                      fontSize: titleFontSize,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()
-                        ..shader = const LinearGradient(
-                          colors: [
-                            Color(0xFF468AFF),
-                            Color(0xFF8969FF),
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ).createShader(
-                          Rect.fromLTWH(0.0, 0.0, 200.0, titleFontSize * 1.2),
-                        ),
-                    ),
+                  Image(
+                    image: AssetImage("assets/images/gov_logo.jpg"),
+                    width: screenWidth * 0.08,
                   ),
-                  SizedBox(height: sizeConfigH * 0.5),
-                  // Gradient line below SUVIDHA
-                  Container(
-                    width: sizeConfigW * 20, // Adjust width as needed
-                    height: 3,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(1.5),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFF6F01FF),
-                          Color(0xFFB172FF),
-                          Color(0xFF4332FF),
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
+                  SizedBox(width: screenWidth * 0.03),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'SUVIDHA',
+                        style: GoogleFonts.montserrat(
+                          fontSize: titleFontSize,
+                          fontWeight: FontWeight.bold,
+                          foreground: Paint()
+                            ..shader =
+                                const LinearGradient(
+                                  colors: [
+                                    Color(0xFF468AFF),
+                                    Color(0xFF8969FF),
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ).createShader(
+                                  Rect.fromLTWH(
+                                    0.0,
+                                    0.0,
+                                    200.0,
+                                    titleFontSize * 1.2,
+                                  ),
+                                ),
+                        ),
                       ),
-                    ),
+                      SizedBox(height: sizeConfigH * 0.5),
+                      // Gradient line below SUVIDHA
+                      Container(
+                        width: sizeConfigW * 20, // Adjust width as needed
+                        height: 3,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(1.5),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xFF6F01FF),
+                              Color(0xFFB172FF),
+                              Color(0xFF4332FF),
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -119,7 +129,7 @@ class Home1 extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     // Spacer to push content up slightly
                     const Spacer(flex: 1),
@@ -145,17 +155,23 @@ class Home1 extends StatelessWidget {
                         fontSize: subtitleFontSize,
                         fontWeight: FontWeight.w500,
                         foreground: Paint()
-                          ..shader = const LinearGradient(
-                            colors: [
-                              Color(0xFF6F01FF),
-                              Color(0xFFB172FF),
-                              Color(0xFF4332FF),
-                            ],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ).createShader(
-                            Rect.fromLTWH(0.0, 0.0, 300.0, subtitleFontSize * 1.2),
-                          ),
+                          ..shader =
+                              const LinearGradient(
+                                colors: [
+                                  Color(0xFF6F01FF),
+                                  Color(0xFFB172FF),
+                                  Color(0xFF4332FF),
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ).createShader(
+                                Rect.fromLTWH(
+                                  0.0,
+                                  0.0,
+                                  300.0,
+                                  subtitleFontSize * 1.2,
+                                ),
+                              ),
                       ),
                     ),
 
@@ -172,7 +188,6 @@ class Home1 extends StatelessWidget {
                         animate: true,
                       ),
                     ),
-
 
                     SizedBox(height: sizeConfigH * 6),
 
@@ -193,8 +208,7 @@ class Home1 extends StatelessWidget {
                       ),
                     ),
 
-                    const Spacer(flex: 2),
-
+                    SizedBox(height: sizeConfigH * 8),
                     // Get Started Button
                     Container(
                       width: isLargeScreen ? 300 : screenWidth * 0.6,
@@ -217,8 +231,10 @@ class Home1 extends StatelessWidget {
                           Get.to(() => const Home2());
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent, // transparent to show gradient
-                          shadowColor: Colors.transparent,     // remove shadow so gradient looks clean
+                          backgroundColor: Colors
+                              .transparent, // transparent to show gradient
+                          shadowColor: Colors
+                              .transparent, // remove shadow so gradient looks clean
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
@@ -234,8 +250,7 @@ class Home1 extends StatelessWidget {
                       ),
                     ),
 
-
-                    SizedBox(height: sizeConfigH * 4),
+                    SizedBox(height: sizeConfigH * 3),
 
                     // Bottom quote
                     Container(
@@ -254,7 +269,7 @@ class Home1 extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(height: sizeConfigH * 4),
+                    SizedBox(height: sizeConfigH * 12),
                   ],
                 ),
               ),
