@@ -10,12 +10,14 @@ class IssueService {
     String email,
     String name,
     String content,
+    String? photo,
   ) async {
     String url = "https://cdgi-backend-main.onrender.com/submit-issue";
     Map<String, dynamic> bodyTO = {
       "email": email,
       "name": name,
       "text": content,
+      "photo": photo,
     };
     String jsonBody = jsonEncode(bodyTO);
     final response = await http.post(

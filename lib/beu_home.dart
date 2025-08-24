@@ -1,3 +1,4 @@
+import 'package:cdgi/services/camera_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
   String _transcript = '';
-
+  String? _base64Photo;
   /* ---------- VOICE CONTROL ---------- */
   Future<void> _startListening() async {
     final available = await _speech.initialize(
@@ -51,43 +52,45 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       barrierDismissible: false, // Prevent closing by clicking outside
-      builder: (_) => _ConfirmationDialog(text: _transcript),
+      builder: (_) =>
+          _ConfirmationDialog(text: _transcript, base32Photo: _base64Photo),
     );
   }
-
-  Future<void> _submitIssue() async {
-    if (_transcript.isEmpty) return;
-
-    try {
-      final User? currentUser = FirebaseAuth.instance.currentUser;
-
-      if (currentUser == null) {
-        _showSnack('User not authenticated');
-        return;
-      }
-
-      final either = await _issueViewModel.createIssue(
-        currentUser.email ?? "unknown@example.com", // Use actual user email
-        currentUser.displayName ??
-            "Voice Report", // Use actual user name or fallback
-        _transcript,
-      );
-
-      either.fold(
-        (failure) {
-          _showSnack('Error: ${failure.message}');
-        },
-        (success) {
-          _showSnack('Issue submitted successfully!');
-          setState(
-            () => _transcript = '',
-          ); // Clear transcript after successful submission
-        },
-      );
-    } catch (e) {
-      _showSnack('Failed to submit issue: $e');
-    }
-  }
+  //
+  // Future<void> _submitIssue() async {
+  //   if (_transcript.isEmpty) return;
+  //
+  //   try {
+  //     final User? currentUser = FirebaseAuth.instance.currentUser;
+  //
+  //     if (currentUser == null) {
+  //       _showSnack('User not authenticated');
+  //       return;
+  //     }
+  //
+  //     final either = await _issueViewModel.createIssue(
+  //       currentUser.email ?? "unknown@example.com", // Use actual user email
+  //       currentUser.displayName ??
+  //           "Voice Report", // Use actual user name or fallback
+  //       _transcript,
+  //       _base32Photo,
+  //     );
+  //
+  //     either.fold(
+  //       (failure) {
+  //         _showSnack('Error: ${failure.message}');
+  //       },
+  //       (success) {
+  //         _showSnack('Issue submitted successfully!');
+  //         setState(
+  //           () => _transcript = '',
+  //         ); // Clear transcript after successful submission
+  //       },
+  //     );
+  //   } catch (e) {
+  //     _showSnack('Failed to submit issue: $e');
+  //   }
+  // }
 
   /* ---------- UI ---------- */
   @override
@@ -245,26 +248,12 @@ class _HomePageState extends State<HomePage> {
                           ),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: ElevatedButton(
-                          onPressed: _submitIssue,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              horizontal: sizeConfigW * 6,
-                              vertical: sizeConfigH * 1.5,
-                            ),
-                          ),
-                          child: Text(
-                            _transcript,
-                            style: GoogleFonts.montserrat(
-                              fontSize: buttonTextSize,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
+                        child: Text(
+                          _transcript,
+                          style: GoogleFonts.montserrat(
+                            fontSize: buttonTextSize,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -371,6 +360,29 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black54,
                     ),
                   ),
+                  GestureDetector(
+                    onTap: () async {
+                      String? base64 = await CameraService().imgToBase64();
+                      setState(() {
+                        _base64Photo = base64;
+                      });
+                      print(_base64Photo);
+                    },
+                    child: Container(
+                      width: sizeConfigW * 36,
+                      height: sizeConfigW * 12,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.blue, width: 2),
+                      ),
+                      child: Icon(
+                        Icons.add_a_photo_rounded,
+                        size: sizeConfigW * 6,
+                        color: Colors.blue.withValues(alpha: 0.8),
+                      ),
+                    ),
+                  ),
                   Container(
                     width: sizeConfigW * 12,
                     height: sizeConfigW * 12,
@@ -406,7 +418,8 @@ class _HomePageState extends State<HomePage> {
 /* ---------- CONFIRMATION DIALOG ---------- */
 class _ConfirmationDialog extends StatefulWidget {
   final String text;
-  const _ConfirmationDialog({required this.text});
+  String? base32Photo;
+  _ConfirmationDialog({required this.text, this.base32Photo});
 
   @override
   State<_ConfirmationDialog> createState() => _ConfirmationDialogState();
@@ -416,7 +429,6 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
   final IssueViewModel _issueViewModel = IssueViewModel();
   bool _isLoading = false;
   bool _isSuccess = false;
-
   Future<void> _submitComplaint() async {
     setState(() => _isLoading = true);
 
@@ -439,6 +451,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
         currentUser.displayName ??
             "Voice Report", // Use actual user name or fallback
         widget.text,
+        widget.base32Photo, // No photo for complaint
       );
 
       either.fold(

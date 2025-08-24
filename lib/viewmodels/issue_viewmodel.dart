@@ -11,9 +11,15 @@ class IssueViewModel {
     String email,
     String name,
     String content,
+    String? photo,
   ) async {
     try {
-      IssueModel issue = await _issueService.createIssue(email, name, content);
+      IssueModel issue = await _issueService.createIssue(
+        email,
+        name,
+        content,
+        photo,
+      );
       return Right(issue);
     } catch (e) {
       return Left(Failure(e.toString()));
