@@ -1,6 +1,7 @@
 import 'package:cdgi/services/camera_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:cdgi/viewmodels/issue_viewmodel.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +21,8 @@ class _HomePageState extends State<HomePage> {
   bool _isListening = false;
   String _transcript = '';
   String? _base64Photo;
+  double? _currentLatitude;
+  double? _currentLongitude;
   /* ---------- VOICE CONTROL ---------- */
   Future<void> _startListening() async {
     final available = await _speech.initialize(
@@ -52,8 +55,12 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       barrierDismissible: false, // Prevent closing by clicking outside
-      builder: (_) =>
-          _ConfirmationDialog(text: _transcript, base32Photo: _base64Photo),
+      builder: (_) => _ConfirmationDialog(
+        text: _transcript,
+        base32Photo: _base64Photo,
+        lat: _currentLatitude,
+        long: _currentLongitude,
+      ),
     );
   }
   //
@@ -248,12 +255,26 @@ class _HomePageState extends State<HomePage> {
                           ),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Text(
-                          _transcript,
-                          style: GoogleFonts.montserrat(
-                            fontSize: buttonTextSize,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: sizeConfigW * 6,
+                              vertical: sizeConfigH * 1.5,
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            _transcript,
+                            style: GoogleFonts.montserrat(
+                              fontSize: buttonTextSize,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -343,21 +364,68 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: sizeConfigW * 12,
-                    height: sizeConfigW * 12,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Colors.grey.withOpacity(0.3),
-                        width: 1,
+                  GestureDetector(
+                    onTap: () async {
+                      bool serviceEnabled;
+                      LocationPermission permission;
+
+                      serviceEnabled =
+                          await Geolocator.isLocationServiceEnabled();
+                      if (!serviceEnabled) {
+                        _showSnack('Location services are disabled.');
+                        return;
+                      }
+
+                      permission = await Geolocator.checkPermission();
+                      if (permission == LocationPermission.denied) {
+                        permission = await Geolocator.requestPermission();
+                        if (permission == LocationPermission.denied) {
+                          _showSnack('Location permissions are denied');
+                          return;
+                        }
+                      }
+
+                      Position position = await Geolocator.getCurrentPosition(
+                        desiredAccuracy: LocationAccuracy.high,
+                      );
+                      setState(() {
+                        _currentLatitude = position.latitude;
+                        _currentLongitude = position.longitude;
+                      });
+                      print(
+                        'Location: Lat: $_currentLatitude, Long: $_currentLongitude',
+                      );
+                    },
+                    child: Container(
+                      width: sizeConfigW * 40,
+                      height: sizeConfigW * 14,
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.red, width: 2),
                       ),
-                    ),
-                    child: Icon(
-                      Icons.calendar_today,
-                      size: sizeConfigW * 6,
-                      color: Colors.black54,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _currentLatitude == null
+                                ? 'Take Location'
+                                : 'Retake Location',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.red.withValues(alpha: 0.8),
+                            ),
+                          ),
+                          Icon(
+                            Icons.location_on_sharp,
+                            size: sizeConfigW * 6,
+                            color: Colors.red.withValues(alpha: 0.8),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   GestureDetector(
@@ -366,38 +434,37 @@ class _HomePageState extends State<HomePage> {
                       setState(() {
                         _base64Photo = base64;
                       });
-                      print(_base64Photo);
                     },
                     child: Container(
-                      width: sizeConfigW * 36,
-                      height: sizeConfigW * 12,
+                      width: sizeConfigW * 40,
+                      height: sizeConfigW * 14,
+                      padding: EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.blue, width: 2),
                       ),
-                      child: Icon(
-                        Icons.add_a_photo_rounded,
-                        size: sizeConfigW * 6,
-                        color: Colors.blue.withValues(alpha: 0.8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _base64Photo == null
+                                ? 'Take Photo'
+                                : 'Retake Photo',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.blue.withValues(alpha: 0.8),
+                            ),
+                          ),
+                          Icon(
+                            Icons.add_a_photo_rounded,
+                            size: sizeConfigW * 6,
+                            color: Colors.blue.withValues(alpha: 0.8),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                  Container(
-                    width: sizeConfigW * 12,
-                    height: sizeConfigW * 12,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Colors.grey.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.settings,
-                      size: sizeConfigW * 6,
-                      color: Colors.black54,
                     ),
                   ),
                 ],
@@ -419,7 +486,15 @@ class _HomePageState extends State<HomePage> {
 class _ConfirmationDialog extends StatefulWidget {
   final String text;
   String? base32Photo;
-  _ConfirmationDialog({required this.text, this.base32Photo});
+  double? lat;
+  double? long;
+
+  _ConfirmationDialog({
+    required this.text,
+    this.base32Photo,
+    this.lat,
+    this.long,
+  });
 
   @override
   State<_ConfirmationDialog> createState() => _ConfirmationDialogState();
@@ -452,6 +527,8 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
             "Voice Report", // Use actual user name or fallback
         widget.text,
         widget.base32Photo, // No photo for complaint
+        widget.lat,
+        widget.long,
       );
 
       either.fold(

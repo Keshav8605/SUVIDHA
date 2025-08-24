@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cdgi/services/issue_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
@@ -12,6 +14,8 @@ class IssueViewModel {
     String name,
     String content,
     String? photo,
+    double? lat,
+    double? long,
   ) async {
     try {
       IssueModel issue = await _issueService.createIssue(
@@ -19,6 +23,8 @@ class IssueViewModel {
         name,
         content,
         photo,
+        lat,
+        long,
       );
       return Right(issue);
     } catch (e) {

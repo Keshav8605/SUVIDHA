@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 
@@ -11,6 +12,8 @@ class IssueService {
     String name,
     String content,
     String? photo,
+    double? lat,
+    double? long,
   ) async {
     String url = "https://cdgi-backend-main.onrender.com/submit-issue";
     Map<String, dynamic> bodyTO = {
@@ -18,6 +21,7 @@ class IssueService {
       "name": name,
       "text": content,
       "photo": photo,
+      "location": {"longitude": long, "latitude": lat},
     };
     String jsonBody = jsonEncode(bodyTO);
     final response = await http.post(
@@ -33,6 +37,7 @@ class IssueService {
       return issue;
     }
     debugPrint('Response Code Login Failed: ${response.statusCode}');
+    print(jsonDecode(response.body));
     throw Exception(jsonDecode(response.body));
   }
 
