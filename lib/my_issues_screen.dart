@@ -529,7 +529,7 @@ class _MyIssuesPageState extends State<MyIssuesPage> {
                   ),
                   SizedBox(width: sizeConfigW * 1),
                   Text(
-                    _formatDate(issue.createdAt),
+                    issue.createdAt,
                     style: GoogleFonts.montserrat(
                       fontSize: smallTextSize * 0.9,
                       fontWeight: FontWeight.w400,

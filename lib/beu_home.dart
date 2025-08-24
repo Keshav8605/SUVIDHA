@@ -377,14 +377,17 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            _currentLatitude == null
-                                ? 'Take Location'
-                                : 'Retake Location',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.red.withValues(alpha: 0.8),
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              _currentLatitude == null
+                                  ? 'Take Location'
+                                  : 'Retake Location',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.red.withValues(alpha: 0.8),
+                              ),
                             ),
                           ),
                           Icon(
@@ -421,7 +424,7 @@ class _HomePageState extends State<HomePage> {
                                 ? 'Take Photo'
                                 : 'Retake Photo',
                             style: GoogleFonts.montserrat(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Colors.blue.withValues(alpha: 0.8),
                             ),
