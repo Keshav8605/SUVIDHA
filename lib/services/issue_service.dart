@@ -33,4 +33,26 @@ class IssueService {
     debugPrint('Response Code Login Failed: ${response.statusCode}');
     throw Exception(jsonDecode(response.body));
   }
+
+  Future<List<IssueModel>> getIssuesByUser(String email) async {
+    String url = "https://cdgi-backend-main.onrender.com/issues/user";
+    Map<String, dynamic> bodyTO = {"email": email};
+    String jsonBody = jsonEncode(bodyTO);
+    final response = await http.post(
+      Uri.parse(url),
+      body: jsonBody,
+      headers: {"Content-Type": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      debugPrint('Response Code Get Issues: ${response.statusCode}');
+      final String responseBody = response.body;
+      List<dynamic> jsonList = jsonDecode(responseBody);
+      List<IssueModel> issues = jsonList
+          .map((json) => IssueModel.fromJson(json))
+          .toList();
+      return issues;
+    }
+    debugPrint('Response Code Get Issues Failed: ${response.statusCode}');
+    throw Exception(jsonDecode(response.body));
+  }
 }

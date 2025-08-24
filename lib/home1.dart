@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 import 'beu_home.dart';
-import 'home2.dart';
+import 'my_issues_screen.dart';
 
 class Home1 extends StatelessWidget {
   const Home1({super.key});
@@ -120,6 +120,23 @@ class Home1 extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => MyIssuesPage());
+                    },
+                    child: Text(
+                      'My Issues',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 10,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Color(0xFF4332FF),
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF4332FF),
+                      ),
+                    ),
                   ),
                 ],
               ),

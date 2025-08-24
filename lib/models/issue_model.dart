@@ -4,15 +4,15 @@ class IssueModel {
   final String ticketId;
   final String category;
   final String address;
-  final Location? location; // nullable
+  final Location? location;
   final String description;
   final String title;
-  final String? photo; // nullable
+  final String? photo;
   final String status;
   final String createdAt;
   final List<String> users;
   final int issueCount;
-  final String originalText;
+  final dynamic originalText;
 
   IssueModel({
     required this.ticketId,
@@ -38,12 +38,12 @@ class IssueModel {
     ticketId: json["ticket_id"],
     category: json["category"],
     address: json["address"],
-    location: json["location"] != null
-        ? Location.fromJson(json["location"])
-        : null,
+    location: json["location"] == null
+        ? null
+        : Location.fromJson(json["location"]),
     description: json["description"],
     title: json["title"],
-    photo: json["photo"], // may be null
+    photo: json["photo"],
     status: json["status"],
     createdAt: json["created_at"],
     users: List<String>.from(json["users"].map((x) => x)),
@@ -55,7 +55,7 @@ class IssueModel {
     "ticket_id": ticketId,
     "category": category,
     "address": address,
-    "location": location?.toJson(), // use ? for null safety
+    "location": location?.toJson(),
     "description": description,
     "title": title,
     "photo": photo,
@@ -79,8 +79,8 @@ class Location {
   String toRawJson() => json.encode(toJson());
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
-    longitude: (json["longitude"] ?? 0).toDouble(),
-    latitude: (json["latitude"] ?? 0).toDouble(),
+    longitude: json["longitude"]?.toDouble(),
+    latitude: json["latitude"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
