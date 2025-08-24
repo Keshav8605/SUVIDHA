@@ -4,6 +4,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:cdgi/viewmodels/issue_viewmodel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,9 +48,10 @@ class _HomePageState extends State<HomePage> {
     setState(() => _isListening = false);
 
     if (!mounted) return;
-    showModalBottomSheet(
+    showDialog(
       context: context,
-      builder: (_) => _ConfirmationSheet(text: _transcript),
+      barrierDismissible: false, // Prevent closing by clicking outside
+      builder: (_) => _ConfirmationDialog(text: _transcript),
     );
   }
 
@@ -57,9 +59,17 @@ class _HomePageState extends State<HomePage> {
     if (_transcript.isEmpty) return;
 
     try {
+      final User? currentUser = FirebaseAuth.instance.currentUser;
+
+      if (currentUser == null) {
+        _showSnack('User not authenticated');
+        return;
+      }
+
       final either = await _issueViewModel.createIssue(
-        "user@example.com", // You can replace with actual user email
-        "Voice Report",
+        currentUser.email ?? "unknown@example.com", // Use actual user email
+        currentUser.displayName ??
+            "Voice Report", // Use actual user name or fallback
         _transcript,
       );
 
@@ -249,9 +259,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           child: Text(
-                            _transcript.length > 25
-                                ? '${_transcript.substring(0, 25)}...'
-                                : _transcript,
+                            _transcript,
                             style: GoogleFonts.montserrat(
                               fontSize: buttonTextSize,
                               fontWeight: FontWeight.w500,
@@ -395,58 +403,296 @@ class _HomePageState extends State<HomePage> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 }
 
-/* ---------- CONFIRMATION SHEET ---------- */
-class _ConfirmationSheet extends StatelessWidget {
+/* ---------- CONFIRMATION DIALOG ---------- */
+class _ConfirmationDialog extends StatefulWidget {
   final String text;
-  _ConfirmationSheet({required this.text});
+  const _ConfirmationDialog({required this.text});
+
+  @override
+  State<_ConfirmationDialog> createState() => _ConfirmationDialogState();
+}
+
+class _ConfirmationDialogState extends State<_ConfirmationDialog> {
   final IssueViewModel _issueViewModel = IssueViewModel();
+  bool _isLoading = false;
+  bool _isSuccess = false;
+
+  Future<void> _submitComplaint() async {
+    setState(() => _isLoading = true);
+
+    try {
+      final User? currentUser = FirebaseAuth.instance.currentUser;
+
+      if (currentUser == null) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('User not authenticated'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      final either = await _issueViewModel.createIssue(
+        currentUser.email ?? "unknown@example.com", // Use actual user email
+        currentUser.displayName ??
+            "Voice Report", // Use actual user name or fallback
+        widget.text,
+      );
+
+      either.fold(
+        (failure) {
+          setState(() => _isLoading = false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: ${failure.message}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        },
+        (success) {
+          setState(() {
+            _isLoading = false;
+            _isSuccess = true;
+          });
+
+          // Auto close after showing success
+          Future.delayed(const Duration(seconds: 2), () {
+            if (mounted) Navigator.of(context).pop();
+          });
+        },
+      );
+    } catch (e) {
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to submit: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: Wrap(
-        children: [
-          ListTile(
-            title: const Text('We heard:'),
-            subtitle: Text(text, style: const TextStyle(fontSize: 16)),
-          ),
-          ButtonBar(
-            alignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              OutlinedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Try again'),
+    double screenWidth = MediaQuery.of(context).size.width;
+    double sizeConfigW = screenWidth / 100;
+
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.all(sizeConfigW * 6),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 0,
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (_isSuccess) ...[
+              // Success state
+              Container(
+                width: sizeConfigW * 16,
+                height: sizeConfigW * 16,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4CAF50).withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_circle,
+                  color: const Color(0xFF4CAF50),
+                  size: sizeConfigW * 10,
+                ),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  final either = await _issueViewModel.createIssue(
-                    "ss@g.com",
-                    "sda",
-                    text,
-                  );
-                  either.fold(
-                    (l) {
-                      print(l.message);
-                      // emit(SignUpErrorState(l.message));
-                    },
-                    (r) {
-                      print(r.description);
-                      // emit(SignUpSuccess(r));
-                    },
-                  );
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Complaint sent!')),
-                  );
-                },
-                child: const Text('Send'),
+              SizedBox(height: sizeConfigW * 4),
+              Text(
+                'Complaint Registered!',
+                style: GoogleFonts.montserrat(
+                  fontSize: sizeConfigW * 5,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: sizeConfigW * 2),
+              Text(
+                'Your complaint has been successfully submitted.',
+                style: GoogleFonts.montserrat(
+                  fontSize: sizeConfigW * 3.5,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black54,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ] else if (_isLoading) ...[
+              // Loading state
+              Container(
+                width: sizeConfigW * 16,
+                height: sizeConfigW * 16,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF468AFF).withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: SizedBox(
+                    width: sizeConfigW * 8,
+                    height: sizeConfigW * 8,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        const Color(0xFF468AFF),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: sizeConfigW * 4),
+              Text(
+                'Submitting...',
+                style: GoogleFonts.montserrat(
+                  fontSize: sizeConfigW * 5,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: sizeConfigW * 2),
+              Text(
+                'Please wait while we process your complaint.',
+                style: GoogleFonts.montserrat(
+                  fontSize: sizeConfigW * 3.5,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black54,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ] else ...[
+              // Initial confirmation state
+              Container(
+                width: sizeConfigW * 16,
+                height: sizeConfigW * 16,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF468AFF).withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.record_voice_over,
+                  color: const Color(0xFF468AFF),
+                  size: sizeConfigW * 8,
+                ),
+              ),
+              SizedBox(height: sizeConfigW * 4),
+              Text(
+                'We heard:',
+                style: GoogleFonts.montserrat(
+                  fontSize: sizeConfigW * 4,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: sizeConfigW * 3),
+              Container(
+                padding: EdgeInsets.all(sizeConfigW * 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF8F9FA),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: const Color(0xFF468AFF).withOpacity(0.1),
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  widget.text.isEmpty ? 'No speech detected' : widget.text,
+                  style: GoogleFonts.montserrat(
+                    fontSize: sizeConfigW * 3.8,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black87,
+                    height: 1.4,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: sizeConfigW * 6),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(
+                          color: const Color(0xFF468AFF).withOpacity(0.3),
+                          width: 1.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          vertical: sizeConfigW * 3.5,
+                        ),
+                      ),
+                      child: Text(
+                        'Try Again',
+                        style: GoogleFonts.montserrat(
+                          fontSize: sizeConfigW * 3.8,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xFF468AFF),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: sizeConfigW * 3),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF468AFF), Color(0xFF8969FF)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: widget.text.isEmpty
+                            ? null
+                            : _submitComplaint,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: sizeConfigW * 3.5,
+                          ),
+                        ),
+                        child: Text(
+                          'Send',
+                          style: GoogleFonts.montserrat(
+                            fontSize: sizeConfigW * 3.8,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
