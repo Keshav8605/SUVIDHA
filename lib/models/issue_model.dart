@@ -9,6 +9,9 @@ class IssueModel {
   final String title;
   final String? photo;
   final String status;
+  final String? inProgressAt;
+  final String? completedAt;
+  final String? updatedBy;
   final String createdAt;
   final List<String> users;
   final int issueCount;
@@ -19,6 +22,8 @@ class IssueModel {
     required this.category,
     required this.address,
     required this.location,
+    required this.inProgressAt,
+    required this.completedAt,
     required this.description,
     required this.title,
     required this.photo,
@@ -27,6 +32,7 @@ class IssueModel {
     required this.users,
     required this.issueCount,
     required this.originalText,
+    required this.updatedBy,
   });
 
   factory IssueModel.fromRawJson(String str) =>
@@ -49,6 +55,9 @@ class IssueModel {
     users: List<String>.from(json["users"].map((x) => x)),
     issueCount: json["issue_count"],
     originalText: json["original_text"],
+    inProgressAt: json['in_progress_at'],
+    completedAt: json['completed_at'],
+    updatedBy: json['updated_by_email'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -64,6 +73,9 @@ class IssueModel {
     "users": List<dynamic>.from(users.map((x) => x)),
     "issue_count": issueCount,
     "original_text": originalText,
+    "in_progress_at": inProgressAt,
+    "completed_at": completedAt,
+    "updated_by_email": updatedBy,
   };
 }
 

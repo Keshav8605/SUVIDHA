@@ -470,7 +470,28 @@ class _MyIssuesPageState extends State<MyIssuesPage> {
               ),
             ],
           ),
-
+          SizedBox(height: sizeConfigH * 1),
+          if (issue.inProgressAt != null && issue.completedAt == null)
+            Text(
+              "Sent for Progress by ${issue.updatedBy} on - ${issue.inProgressAt!}",
+              maxLines: 2,
+              style: GoogleFonts.montserrat(
+                fontSize: smallTextSize * 0.9,
+                fontWeight: FontWeight.w600,
+                color: Colors.blue,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          if (issue.completedAt != null && issue.updatedBy != null)
+            Text(
+              "Completed by ${issue.updatedBy} on - ${issue.completedAt}",
+              style: GoogleFonts.montserrat(
+                fontSize: smallTextSize * 0.9,
+                fontWeight: FontWeight.w600,
+                color: Colors.blue,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
           SizedBox(height: sizeConfigH * 1),
 
           // Issue description

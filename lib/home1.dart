@@ -126,15 +126,28 @@ class Home1 extends StatelessWidget {
                     onTap: () {
                       Get.to(() => MyIssuesPage());
                     },
-                    child: Text(
-                      'My Issues',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.montserrat(
-                        fontSize: 10,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Color(0xFF4332FF),
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF4332FF),
+                    child: Material(
+                      elevation: 2, // controls shadow depth
+                      borderRadius: BorderRadius.circular(8),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple.withValues(alpha: 0.1),
+                          border: Border.all(color: Colors.purple),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          'My Issues',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
                     ),
                   ),

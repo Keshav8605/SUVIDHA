@@ -15,14 +15,20 @@ class IssueService {
     double? lat,
     double? long,
   ) async {
+    bool isloc = true;
+    if (lat == null || long == null) {
+      isloc = false;
+    }
     String url = "https://cdgi-backend-main.onrender.com/submit-issue";
-    Map<String, dynamic> bodyTO = {
-      "email": email,
-      "name": name,
-      "text": content,
-      "photo": photo,
-      "location": {"longitude": long, "latitude": lat},
-    };
+    Map<String, dynamic> bodyTO = isloc
+        ? {
+            "email": email,
+            "name": name,
+            "text": content,
+            "photo": photo,
+            "location": {"longitude": long, "latitude": lat},
+          }
+        : {"email": email, "name": name, "text": content, "photo": photo};
     String jsonBody = jsonEncode(bodyTO);
     final response = await http.post(
       Uri.parse(url),
@@ -57,6 +63,7 @@ class IssueService {
       List<IssueModel> issues = jsonList
           .map((json) => IssueModel.fromJson(json))
           .toList();
+      print(responseBody);
       return issues;
     }
     debugPrint('Response Code Get Issues Failed: ${response.statusCode}');

@@ -523,7 +523,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
           // Auto close after showing success
           Future.delayed(const Duration(seconds: 3), () {
             if (mounted) Navigator.of(context).pop();
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               CupertinoPageRoute(builder: (context) => MyIssuesPage()),
             );
