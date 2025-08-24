@@ -1,10 +1,11 @@
+import 'package:cdgi/viewmodels/issue_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
 class Home2 extends StatelessWidget {
-  const Home2({super.key});
-
+  Home2({super.key});
+  final IssueViewModel _issueViewModel = IssueViewModel();
   @override
   Widget build(BuildContext context) {
     // Responsive variables
@@ -49,22 +50,22 @@ class Home2 extends StatelessWidget {
             Get.back();
           },
         ),
+        leadingWidth: screenWidth * 0.08,
+        flexibleSpace: null,
         title: Text(
           'SUVIDHA',
           style: GoogleFonts.montserrat(
             fontSize: titleFontSize,
             fontWeight: FontWeight.w600,
             foreground: Paint()
-              ..shader = const LinearGradient(
-                colors: [
-                  Color(0xFF468AFF),
-                  Color(0xFF8969FF),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ).createShader(
-                Rect.fromLTWH(0.0, 0.0, 200.0, titleFontSize * 1.2),
-              ),
+              ..shader =
+                  const LinearGradient(
+                    colors: [Color(0xFF468AFF), Color(0xFF8969FF)],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ).createShader(
+                    Rect.fromLTWH(0.0, 0.0, 200.0, titleFontSize * 1.2),
+                  ),
           ),
         ),
         bottom: PreferredSize(
@@ -228,13 +229,25 @@ class Home2 extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(micButtonSize / 2),
-                      onTap: () {
-                        // TODO: Handle voice recording
+                      onTap: () async {
+                        final either = await _issueViewModel.createIssue(
+                          "ss@g.com",
+                          "sda",
+                          "the light is not coming since 3 days, in scheme number 78 ashok nagar area, indore",
+                        );
+                        either.fold(
+                          (l) {
+                            print(l.message);
+                            // emit(SignUpErrorState(l.message));
+                          },
+                          (r) {
+                            print(r.description);
+                            // emit(SignUpSuccess(r));
+                          },
+                        );
                       },
                       child: Container(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
                         child: Icon(
                           Icons.mic,
                           size: micButtonSize * 0.4,

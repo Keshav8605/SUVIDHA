@@ -228,7 +228,7 @@ class Home1 extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           // TODO: Navigate to next screen
-                          Get.to(() => const Home2());
+                          Get.to(() => Home2());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors
