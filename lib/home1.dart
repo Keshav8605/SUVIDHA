@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
+import 'beu_home.dart';
 import 'home2.dart';
 
 class Home1 extends StatelessWidget {
@@ -228,7 +229,7 @@ class Home1 extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           // TODO: Navigate to next screen
-                          Get.to(() => Home2());
+                          Get.to(() => HomePage());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors

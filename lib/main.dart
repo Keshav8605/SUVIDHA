@@ -5,6 +5,7 @@ import 'package:cdgi/signup_screen.dart';
 import 'package:cdgi/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'beu_home.dart';
 import 'start_screen1.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
