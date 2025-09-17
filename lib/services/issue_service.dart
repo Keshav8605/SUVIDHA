@@ -20,7 +20,7 @@ class IssueService {
     if (lat == null || long == null) {
       isloc = false;
     }
-    String url = "https://cdgi-backend-main.onrender.com/submit-issue";
+    String url = "https://suvidha-backend-fmw2.onrender.com/submit-issue";
     Map<String, dynamic> bodyTO = isloc
         ? {
             "email": email,
@@ -53,7 +53,7 @@ class IssueService {
 
       final response = await http.post(
         Uri.parse(
-          'https://cdgi-backend-main.onrender.com/issues/$ticketId/complete',
+          'https://suvidha-backend-fmw2.onrender.com/issues/$ticketId/complete',
         ),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
@@ -71,7 +71,7 @@ class IssueService {
   }
 
   Future<List<IssueModel>> getIssuesByUser(String email) async {
-    String url = "https://cdgi-backend-main.onrender.com/issues/user";
+    String url = "https://suvidha-backend-fmw2.onrender.com/issues/user";
     Map<String, dynamic> bodyTO = {"email": email};
     String jsonBody = jsonEncode(bodyTO);
     final response = await http.post(
