@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:cdgi/language_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,22 +31,46 @@ class _HomePageState extends State<HomePage> {
   Future<void> _startListening() async {
     final available = await _speech.initialize(
       onStatus: (s) => debugPrint('STATUS → $s'),
-      onError: (e) => _showSnack('Speech error: ${e.errorMsg}'),
+      onError: (e) => _showSnack('${'speech_error'.tr}${e.errorMsg}'),
     );
 
     if (!available) {
-      _showSnack('Speech engine unavailable');
+      _showSnack('speech_engine_unavailable'.tr);
       return;
     }
 
     HapticFeedback.mediumImpact();
     setState(() => _isListening = true);
 
+    // Get current language from language controller
+    final languageController = Get.find<LanguageController>();
+    final currentLanguageCode = languageController.getSelectedLanguageCode();
+    
+    // Map language codes to speech recognition locales
+    String speechLocale = 'en_US';
+    switch (currentLanguageCode) {
+      case 'hi':
+        speechLocale = 'hi_IN';
+        break;
+      case 'bn':
+        speechLocale = 'bn_IN';
+        break;
+      case 'te':
+        speechLocale = 'te_IN';
+        break;
+      case 'ta':
+        speechLocale = 'ta_IN';
+        break;
+      case 'mr':
+        speechLocale = 'mr_IN';
+        break;
+      default:
+        speechLocale = 'en_US';
+    }
+
     await _speech.listen(
       onResult: (val) => setState(() => _transcript = val.recognizedWords),
-      localeId: await _speech.systemLocale().then(
-        (v) => v?.localeId ?? 'en_US',
-      ),
+      localeId: speechLocale,
     );
   }
 
@@ -147,7 +172,7 @@ class _HomePageState extends State<HomePage> {
 
               // Welcome message
               Text(
-                'Welcome to Suvidha!',
+                'welcome_to_suvidha_voice'.tr,
                 style: GoogleFonts.montserrat(
                   fontSize: bodyFontSize,
                   fontWeight: FontWeight.w600,
@@ -159,7 +184,7 @@ class _HomePageState extends State<HomePage> {
 
               // Description
               Text(
-                'Your voice assistant for municipal services.',
+                'voice_assistant_description'.tr,
                 style: GoogleFonts.montserrat(
                   fontSize: smallTextSize,
                   fontWeight: FontWeight.w400,
@@ -171,7 +196,7 @@ class _HomePageState extends State<HomePage> {
 
               // Instructions
               Text(
-                'Tap the mic & speak your request.',
+                'tap_mic_speak'.tr,
                 style: GoogleFonts.montserrat(
                   fontSize: smallTextSize,
                   fontWeight: FontWeight.w400,
@@ -253,8 +278,8 @@ class _HomePageState extends State<HomePage> {
               Center(
                 child: Text(
                   _isListening
-                      ? 'Listening to your voice...'
-                      : 'AI is ready to help...',
+                      ? 'listening_to_voice'.tr
+                      : 'ai_ready_help'.tr,
                   style: GoogleFonts.montserrat(
                     fontSize: smallTextSize,
                     fontWeight: FontWeight.w400,
@@ -317,7 +342,7 @@ class _HomePageState extends State<HomePage> {
 
               Center(
                 child: Text(
-                  _isListening ? 'Listening…' : 'Tap the mic to start',
+                  _isListening ? 'listening'.tr : 'tap_mic_start'.tr,
                   style: GoogleFonts.montserrat(
                     fontSize: smallTextSize,
                     fontWeight: FontWeight.w400,
@@ -340,7 +365,7 @@ class _HomePageState extends State<HomePage> {
                       serviceEnabled =
                           await Geolocator.isLocationServiceEnabled();
                       if (!serviceEnabled) {
-                        _showSnack('Location services are disabled.');
+                        _showSnack('location_services_disabled'.tr);
                         return;
                       }
 
@@ -348,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                       if (permission == LocationPermission.denied) {
                         permission = await Geolocator.requestPermission();
                         if (permission == LocationPermission.denied) {
-                          _showSnack('Location permissions are denied');
+                          _showSnack('location_permissions_denied'.tr);
                           return;
                         }
                       }
@@ -381,8 +406,8 @@ class _HomePageState extends State<HomePage> {
                             fit: BoxFit.scaleDown,
                             child: Text(
                               _currentLatitude == null
-                                  ? 'Take Location'
-                                  : 'Retake Location',
+                                  ? 'take_location'.tr
+                                  : 'retake_location'.tr,
                               style: GoogleFonts.montserrat(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
@@ -421,8 +446,8 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             _base64Photo == null
-                                ? 'Take Photo'
-                                : 'Retake Photo',
+                                ? 'take_photo'.tr
+                                : 'retake_photo'.tr,
                             style: GoogleFonts.montserrat(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
@@ -485,8 +510,8 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
       if (currentUser == null) {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('User not authenticated'),
+          SnackBar(
+            content: Text('user_not_authenticated'.tr),
             backgroundColor: Colors.red,
           ),
         );
@@ -587,7 +612,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
               ),
               SizedBox(height: sizeConfigW * 4),
               Text(
-                'Complaint Registered!',
+                'complaint_registered'.tr,
                 style: GoogleFonts.montserrat(
                   fontSize: sizeConfigW * 5,
                   fontWeight: FontWeight.w600,
@@ -597,7 +622,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
               ),
               SizedBox(height: sizeConfigW * 2),
               Text(
-                'Your complaint has been successfully submitted.',
+                'complaint_submitted_success'.tr,
                 style: GoogleFonts.montserrat(
                   fontSize: sizeConfigW * 3.5,
                   fontWeight: FontWeight.w400,
@@ -629,7 +654,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
               ),
               SizedBox(height: sizeConfigW * 4),
               Text(
-                'Submitting...',
+                'submitting'.tr,
                 style: GoogleFonts.montserrat(
                   fontSize: sizeConfigW * 5,
                   fontWeight: FontWeight.w600,
@@ -639,7 +664,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
               ),
               SizedBox(height: sizeConfigW * 2),
               Text(
-                'Please wait while we process your complaint.',
+                'please_wait_processing'.tr,
                 style: GoogleFonts.montserrat(
                   fontSize: sizeConfigW * 3.5,
                   fontWeight: FontWeight.w400,
@@ -664,7 +689,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
               ),
               SizedBox(height: sizeConfigW * 4),
               Text(
-                'We heard:',
+                'we_heard'.tr,
                 style: GoogleFonts.montserrat(
                   fontSize: sizeConfigW * 4,
                   fontWeight: FontWeight.w600,
@@ -684,7 +709,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
                   ),
                 ),
                 child: Text(
-                  widget.text.isEmpty ? 'No speech detected' : widget.text,
+                  widget.text.isEmpty ? 'no_speech_detected'.tr : widget.text,
                   style: GoogleFonts.montserrat(
                     fontSize: sizeConfigW * 3.8,
                     fontWeight: FontWeight.w400,
@@ -713,7 +738,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
                         ),
                       ),
                       child: Text(
-                        'Try Again',
+                        'try_again'.tr,
                         style: GoogleFonts.montserrat(
                           fontSize: sizeConfigW * 3.8,
                           fontWeight: FontWeight.w500,
@@ -748,7 +773,7 @@ class _ConfirmationDialogState extends State<_ConfirmationDialog> {
                           ),
                         ),
                         child: Text(
-                          'Send',
+                          'send'.tr,
                           style: GoogleFonts.montserrat(
                             fontSize: sizeConfigW * 3.8,
                             fontWeight: FontWeight.w600,
