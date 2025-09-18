@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:get/get.dart';
 
 class StartScreen2 extends StatelessWidget {
   const StartScreen2({super.key});
@@ -40,9 +41,8 @@ class StartScreen2 extends StatelessWidget {
                   // Spacer
                   SizedBox(height: size / 5),
 
-                  // Title
                   Text(
-                    'Stay Updated',
+                    'stay_updated'.tr,
                     style: GoogleFonts.montserrat(
                       fontSize: size / 15,
                       fontWeight: FontWeight.bold,
@@ -54,11 +54,10 @@ class StartScreen2 extends StatelessWidget {
 
                   SizedBox(height: size / 40),
 
-                  // Subtitle
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: size / 20),
                     child: Text(
-                      'Get instant alerts for every\nimportant update.',
+                      'instant_alerts'.tr,
                       style: GoogleFonts.montserrat(
                         fontSize: size / 25,
                         color: const Color(0xFF656565),
@@ -106,7 +105,7 @@ class StartScreen2 extends StatelessWidget {
                           color: Colors.black,
                         ),
                         label: Text(
-                          'Prev',
+                          'prev'.tr,
                           style: GoogleFonts.montserrat(
                             fontSize: size / 28,
                             fontWeight: FontWeight.w500,
@@ -144,7 +143,7 @@ class StartScreen2 extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Next',
+                            'next'.tr,
                             style: GoogleFonts.montserrat(
                               fontSize: size / 25,
                               fontWeight: FontWeight.w500,

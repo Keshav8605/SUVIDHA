@@ -135,12 +135,12 @@ class Home1 extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.deepPurple.withValues(alpha: 0.1),
+                          color: Colors.deepPurple.withOpacity(0.1),
                           border: Border.all(color: Colors.purple),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          'My Issues',
+                          'my_issues'.tr,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.montserrat(
                             fontSize: 16,
@@ -165,9 +165,8 @@ class Home1 extends StatelessWidget {
                     // Spacer to push content up slightly
                     const Spacer(flex: 1),
 
-                    // Welcome to SUVIDHA! title
                     Text(
-                      'Welcome to SUVIDHA!',
+                      'welcome_to_suvidha'.tr,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.montserrat(
                         fontSize: headerFontSize,
@@ -178,9 +177,8 @@ class Home1 extends StatelessWidget {
 
                     SizedBox(height: sizeConfigH * 1),
 
-                    // Your Voice, Our Action subtitle
                     Text(
-                      'Your Voice, Our Action.',
+                      'your_voice_our_action'.tr,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.montserrat(
                         fontSize: subtitleFontSize,
@@ -222,13 +220,12 @@ class Home1 extends StatelessWidget {
 
                     SizedBox(height: sizeConfigH * 6),
 
-                    // Description text
                     Container(
                       constraints: BoxConstraints(
                         maxWidth: isLargeScreen ? 400 : double.infinity,
                       ),
                       child: Text(
-                        'Your intelligent voice assistant for all\nmunicipal services\n—simple, fast, and reliable.',
+                        'intelligent_voice_assistant'.tr,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.montserrat(
                           fontSize: bodyFontSize,
@@ -271,7 +268,7 @@ class Home1 extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          'Get Started',
+                          'get_started'.tr,
                           style: GoogleFonts.montserrat(
                             fontSize: buttonFontSize,
                             fontWeight: FontWeight.w600,
@@ -283,13 +280,12 @@ class Home1 extends StatelessWidget {
 
                     SizedBox(height: sizeConfigH * 3),
 
-                    // Bottom quote
                     Container(
                       constraints: BoxConstraints(
                         maxWidth: isLargeScreen ? 350 : double.infinity,
                       ),
                       child: Text(
-                        '"Effortless Municipal Services. Just Speak."',
+                        'effortless_municipal_services'.tr,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.montserrat(
                           fontSize: quoteFontSize,

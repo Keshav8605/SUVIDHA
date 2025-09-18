@@ -129,7 +129,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           SizedBox(height: screenHeight * 0.001),
                           Text(
-                            'Your voice, always heard.',
+                            'your_voice_always_heard'.tr,
                             style: GoogleFonts.montserrat(
                               fontSize: subtitleFontSize,
                               color: const Color(0xFF6B6B6B),
@@ -138,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           SizedBox(height: screenHeight * 0.04),
                           Text(
-                            'Create an Account',
+                            'create_an_account'.tr,
                             style: GoogleFonts.montserrat(
                               fontSize: headerFontSize,
                               fontWeight: FontWeight.bold,
@@ -147,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           SizedBox(height: screenHeight * 0.003),
                           Text(
-                            'Get started today',
+                            'get_started_today'.tr,
                             style: GoogleFonts.montserrat(
                               fontSize: bodyFontSize,
                               color: const Color(0xFF7D7D7D),
@@ -159,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           // ✅ Full Name (Not validated)
                           _buildTextField(
                             controller: _usernameController,
-                            hint: 'Full name',
+                            hint: 'full_name'.tr,
                             fontSize: bodyFontSize,
                           ),
 
@@ -168,7 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           // ✅ Email (Validation Added)
                           _buildTextFormField(
                             controller: _emailController,
-                            hint: 'Email Address',
+                            hint: 'email_address'.tr,
                             fontSize: bodyFontSize,
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
@@ -187,7 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           // ✅ Password
                           _buildTextFormField(
                             controller: _passwordController,
-                            hint: 'Password',
+                            hint: 'password'.tr,
                             fontSize: bodyFontSize,
                             obscureText: true,
                             validator: (value) {
@@ -204,7 +204,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           // ✅ Confirm Password
                           _buildTextFormField(
                             controller: _confirmPasswordController,
-                            hint: 'Confirm password',
+                            hint: 'confirm_password'.tr,
                             fontSize: bodyFontSize,
                             obscureText: true,
                             validator: (value) {
@@ -233,7 +233,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ),
                               child: Text(
-                                'Sign Up',
+                                'sign_up'.tr,
                                 style: GoogleFonts.montserrat(
                                   fontSize: buttonFontSize,
                                   fontWeight: FontWeight.w600,
@@ -256,7 +256,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: screenWidth * 0.05,
                               ),
                               label: Text(
-                                'Sign in with Google',
+                                'sign_in_with_google'.tr,
                                 style: GoogleFonts.montserrat(
                                   fontSize: bodyFontSize,
                                   fontWeight: FontWeight.w500,
@@ -279,7 +279,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextButton(
                         onPressed: () => Get.offAll(LoginScreen()),
                         child: Text(
-                          'Already have an account? Login',
+                          'already_have_account'.tr,
                           style: GoogleFonts.montserrat(
                             fontSize: bodyFontSize,
                             color: Colors.black87,
@@ -297,10 +297,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  // Helper method for text fields without validation
   Widget _buildTextField({
     required TextEditingController controller,
     required String hint,
     required double fontSize,
+    TextInputType? keyboardType,
+    bool obscureText = false,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -309,6 +312,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: TextField(
         controller: controller,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
         style: GoogleFonts.montserrat(fontSize: fontSize),
         decoration: InputDecoration(
           hintText: hint,
@@ -317,18 +322,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
             fontSize: fontSize,
           ),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: Get.width * 0.04,
+            vertical: Get.height * 0.02,
+          ),
         ),
       ),
     );
   }
 
+  // Helper method for text form fields with validation
   Widget _buildTextFormField({
     required TextEditingController controller,
     required String hint,
     required double fontSize,
-    bool obscureText = false,
     TextInputType? keyboardType,
+    bool obscureText = false,
     String? Function(String?)? validator,
     void Function(String?)? onSaved,
   }) {
@@ -339,11 +348,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: TextFormField(
         controller: controller,
-        obscureText: obscureText,
         keyboardType: keyboardType,
+        obscureText: obscureText,
+        style: GoogleFonts.montserrat(fontSize: fontSize),
         validator: validator,
         onSaved: onSaved,
-        style: GoogleFonts.montserrat(fontSize: fontSize),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.montserrat(
@@ -351,18 +360,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             fontSize: fontSize,
           ),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: Get.width * 0.04,
+            vertical: Get.height * 0.02,
+          ),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
   }
 }

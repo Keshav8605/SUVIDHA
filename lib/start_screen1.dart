@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:get/get.dart';
 
 class StartScreen1 extends StatelessWidget {
   const StartScreen1({super.key});
@@ -40,9 +41,8 @@ class StartScreen1 extends StatelessWidget {
                   // Spacer
                   SizedBox(height: size / 5),
 
-                  // Main heading
                   Text(
-                    'Always Here for You',
+                    'always_here_for_you'.tr,
                     style: GoogleFonts.montserrat(
                       fontSize: size / 15,
                       fontWeight: FontWeight.bold,
@@ -54,11 +54,10 @@ class StartScreen1 extends StatelessWidget {
 
                   SizedBox(height: size / 40),
 
-                  // Subtitle
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: size / 20),
                     child: Text(
-                      '24x7 support, anytime you need us.',
+                      'support_24x7'.tr,
                       style: GoogleFonts.montserrat(
                         fontSize: size / 25,
                         color: const Color(0xFF656565),
@@ -137,7 +136,7 @@ class StartScreen1 extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          'Next',
+                          'next'.tr,
                           style: GoogleFonts.montserrat(
                             fontSize: size / 25,
                             fontWeight: FontWeight.w500,

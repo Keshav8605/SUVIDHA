@@ -386,14 +386,14 @@ class _HomePageState extends State<HomePage> {
                               style: GoogleFonts.montserrat(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.red.withValues(alpha: 0.8),
+                                color: Colors.red.withOpacity(0.8),
                               ),
                             ),
                           ),
                           Icon(
                             Icons.location_on_sharp,
                             size: sizeConfigW * 6,
-                            color: Colors.red.withValues(alpha: 0.8),
+                            color: Colors.red.withOpacity(0.8),
                           ),
                         ],
                       ),
@@ -426,13 +426,13 @@ class _HomePageState extends State<HomePage> {
                             style: GoogleFonts.montserrat(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              color: Colors.blue.withValues(alpha: 0.8),
+                              color: Colors.blue.withOpacity(0.8),
                             ),
                           ),
                           Icon(
                             Icons.add_a_photo_rounded,
                             size: sizeConfigW * 6,
-                            color: Colors.blue.withValues(alpha: 0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                         ],
                       ),

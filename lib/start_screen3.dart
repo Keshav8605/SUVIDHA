@@ -1,5 +1,4 @@
 import 'package:cdgi/login_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -41,9 +40,8 @@ class StartScreen3 extends StatelessWidget {
                   // Spacer
                   SizedBox(height: size / 5),
 
-                  // Title
                   Text(
-                    'Smart & Seamless',
+                    'smart_seamless'.tr,
                     style: GoogleFonts.montserrat(
                       fontSize: size / 15,
                       fontWeight: FontWeight.bold,
@@ -55,11 +53,10 @@ class StartScreen3 extends StatelessWidget {
 
                   SizedBox(height: size / 40),
 
-                  // Subtitle
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: size / 20),
                     child: Text(
-                      'Experience faster service with\nAI-powered solutions.',
+                      'ai_powered_solutions'.tr,
                       style: GoogleFonts.montserrat(
                         fontSize: size / 25,
                         color: const Color(0xFF656565),
@@ -105,7 +102,7 @@ class StartScreen3 extends StatelessWidget {
                           color: Colors.black,
                         ),
                         label: Text(
-                          'Prev',
+                          'prev'.tr,
                           style: GoogleFonts.montserrat(
                             fontSize: size / 28,
                             fontWeight: FontWeight.w500,
@@ -140,7 +137,7 @@ class StartScreen3 extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Next',
+                            'next'.tr,
                             style: GoogleFonts.montserrat(
                               fontSize: size / 25,
                               fontWeight: FontWeight.w500,

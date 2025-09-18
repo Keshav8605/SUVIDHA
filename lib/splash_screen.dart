@@ -1,4 +1,4 @@
-import 'package:cdgi/start_screen1.dart';
+import 'package:cdgi/language_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Navigate to StartScreen1 after 3 seconds
     Timer(const Duration(seconds: 5), () {
       Get.off(
-        () => const StartScreen1(),
+        () => LanguageSelectionScreen(),
       ); // Use Get.off to replace current route
     });
   }
@@ -69,9 +69,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
               SizedBox(height: sizeConfigH * 1),
 
-              // Subtitle
               Text(
-                'Your Voice, Our Action.',
+                'your_voice_our_action'.tr,
                 style: GoogleFonts.montserrat(
                   fontSize: subtitleFontSize,
                   fontWeight: FontWeight.w500,

@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:cdgi/services/issue_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../models/failure_model.dart';

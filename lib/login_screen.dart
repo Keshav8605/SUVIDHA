@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(height: screenHeight * 0.001),
                             Text(
-                              'Your voice, always heard.',
+                              'your_voice_always_heard'.tr,
                               style: GoogleFonts.montserrat(
                                 fontSize: subtitleFontSize,
                                 color: const Color(0xFF6B6B6B),
@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              'Welcome Back!',
+                              'welcome_back'.tr,
                               style: GoogleFonts.montserrat(
                                 fontSize: headerFontSize,
                                 fontWeight: FontWeight.bold,
@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(height: screenHeight * 0.005),
                             Text(
-                              'Sign in to continue',
+                              'sign_in_to_continue'.tr,
                               style: GoogleFonts.montserrat(
                                 fontSize: bodyFontSize,
                                 color: const Color(0xFF7D7D7D),
@@ -195,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: bodyFontSize,
                                 ),
                                 decoration: InputDecoration(
-                                  hintText: 'Email Address',
+                                  hintText: 'email_address'.tr,
                                   hintStyle: GoogleFonts.montserrat(
                                     color: Colors.grey[500],
                                     fontSize: bodyFontSize,
@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: bodyFontSize,
                                 ),
                                 decoration: InputDecoration(
-                                  hintText: 'Password',
+                                  hintText: 'password'.tr,
                                   hintStyle: GoogleFonts.montserrat(
                                     color: Colors.grey[500],
                                     fontSize: bodyFontSize,
@@ -263,7 +263,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 child: Text(
-                                  'Sign In',
+                                  'sign_in'.tr,
                                   style: GoogleFonts.montserrat(
                                     fontSize: buttonFontSize,
                                     fontWeight: FontWeight.w600,
@@ -289,7 +289,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       horizontal: screenWidth * 0.04,
                                     ),
                                     child: Text(
-                                      'or continue with',
+                                      'or_continue_with'.tr,
                                       style: GoogleFonts.montserrat(
                                         fontSize: isSmallScreen
                                             ? screenWidth * 0.03
@@ -325,7 +325,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       : screenWidth * 0.05,
                                 ),
                                 label: Text(
-                                  'Sign in with Google',
+                                  'sign_in_with_google'.tr,
                                   style: GoogleFonts.montserrat(
                                     fontSize: bodyFontSize,
                                     fontWeight: FontWeight.w500,
@@ -365,9 +365,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Colors.black87,
                                 ),
                                 children: [
-                                  const TextSpan(text: 'Not a member? '),
+                                  TextSpan(text: 'not_a_member_register'.tr),
                                   TextSpan(
-                                    text: 'Register',
+                                    text: 'register'.tr,
                                     style: GoogleFonts.montserrat(
                                       color: const Color(0xFF4285F4),
                                       fontWeight: FontWeight.w600,
