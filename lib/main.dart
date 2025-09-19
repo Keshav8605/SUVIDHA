@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       translations: AppStrings(),
       locale: const Locale('en', 'US'), // Default locale
       fallbackLocale: const Locale('en', 'US'),
-      home: Home1(),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
