@@ -69,11 +69,10 @@ class Home1 extends StatelessWidget {
               child: Row(
                 children: [
                   Image(
-                    image: AssetImage("assets/images/gov_logo.jpg"),
+                    image: AssetImage("assets/images/logo.png"),
                     width: screenWidth * 0.08,
                   ),
                   SizedBox(width: screenWidth * 0.03),
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -83,22 +82,21 @@ class Home1 extends StatelessWidget {
                           fontSize: titleFontSize,
                           fontWeight: FontWeight.bold,
                           foreground: Paint()
-                            ..shader =
-                                const LinearGradient(
-                                  colors: [
-                                    Color(0xFF468AFF),
-                                    Color(0xFF8969FF),
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ).createShader(
-                                  Rect.fromLTWH(
-                                    0.0,
-                                    0.0,
-                                    200.0,
-                                    titleFontSize * 1.2,
-                                  ),
-                                ),
+                            ..shader = const LinearGradient(
+                              colors: [
+                                Color(0xFF468AFF),
+                                Color(0xFF8969FF),
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ).createShader(
+                              Rect.fromLTWH(
+                                0.0,
+                                0.0,
+                                200.0,
+                                titleFontSize * 1.2,
+                              ),
+                            ),
                         ),
                       ),
                       SizedBox(height: sizeConfigH * 0.5),
@@ -184,23 +182,22 @@ class Home1 extends StatelessWidget {
                         fontSize: subtitleFontSize,
                         fontWeight: FontWeight.w500,
                         foreground: Paint()
-                          ..shader =
-                              const LinearGradient(
-                                colors: [
-                                  Color(0xFF6F01FF),
-                                  Color(0xFFB172FF),
-                                  Color(0xFF4332FF),
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ).createShader(
-                                Rect.fromLTWH(
-                                  0.0,
-                                  0.0,
-                                  300.0,
-                                  subtitleFontSize * 1.2,
-                                ),
-                              ),
+                          ..shader = const LinearGradient(
+                            colors: [
+                              Color(0xFF6F01FF),
+                              Color(0xFFB172FF),
+                              Color(0xFF4332FF),
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ).createShader(
+                            Rect.fromLTWH(
+                              0.0,
+                              0.0,
+                              300.0,
+                              subtitleFontSize * 1.2,
+                            ),
+                          ),
                       ),
                     ),
 

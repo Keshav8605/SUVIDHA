@@ -1,3 +1,5 @@
+import 'package:cdgi/beu_home.dart';
+import 'package:cdgi/home1.dart';
 import 'package:cdgi/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
       translations: AppStrings(),
       locale: const Locale('en', 'US'), // Default locale
       fallbackLocale: const Locale('en', 'US'),
-      home: SplashScreen(),
+      home: Home1(),
       debugShowCheckedModeBanner: false,
     );
   }
